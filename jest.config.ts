@@ -7,4 +7,5 @@ module.exports = {
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
   testPathIgnorePatterns: ['/node_modules/', '/build/'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom'],
 };

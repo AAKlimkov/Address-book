@@ -1,0 +1,18 @@
+.card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-inputs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
