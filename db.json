@@ -1,10 +1,22 @@
 {
   "contacts": [
     {
-      "id": 1,
-      "name": "Andrei K",
-      "email": "andreik@example.com",
-      "phone": "+1231561321966"
+      "id": "e099",
+      "firstName": "Andrei",
+      "lastName": "Front",
+      "email": "test@test.com"
+    },
+    {
+      "id": "4ceb",
+      "firstName": "Андрей",
+      "lastName": "Front",
+      "email": "te@te.com"
+    },
+    {
+      "id": "8357",
+      "firstName": "Andrei",
+      "lastName": "Front11",
+      "email": "te@te.com"
     }
   ]
 }

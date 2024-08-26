@@ -1,0 +1,22 @@
+.contactCard {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contactCard:hover {
+  background-color: #f9f9f9;
+}
+
+.contactCard__name {
+  margin: 0;
+  font-size: 16px;
+}
+
+.contactCard__email {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #666;
+}

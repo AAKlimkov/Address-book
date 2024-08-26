@@ -1,0 +1,38 @@
+.inputContainer {
+  position: relative;
+  margin: 16px 0;
+  font-family: Arial, sans-serif;
+}
+
+.inputContainer label {
+  position: absolute;
+  top: 16px;
+  left: 12px; 
+  color: #999;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+  pointer-events: none;
+  background-color: white;
+  padding: 0 4px; 
+}
+
+.inputContainer input {
+  padding: 16px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  font-size: 16px;
+  width: 95%;
+}
+
+.inputContainer input:focus + label,
+.inputContainer input:not(:placeholder-shown) + label {
+  top: -10px;
+  left: 12px; 
+  font-size: 12px;
+  color: #3f51b5; 
+}
+
+.inputContainer input.error {
+  border-color: red;
+}

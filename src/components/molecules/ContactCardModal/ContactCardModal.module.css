@@ -1,0 +1,91 @@
+.ContactCardModal {
+  padding: 16px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .ContactCardModal {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .inputRow {
+    display: flex;
+    gap: 16px;
+  }
+
+  .inputRow > .inputField {
+    flex: 1;
+  }
+
+  .buttonsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+  }
+
+  .leftButtons {
+    display: flex;
+    align-items: center;
+  }
+
+  .rightButtons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .ContactCardModal {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .inputRow {
+    display: block;
+  }
+
+  .inputField {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 16px;
+  }
+
+  .leftButtons,
+  .rightButtons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .leftButtons {
+    margin-bottom: 8px;
+  }
+
+  .rightButtons > button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 320px) {
+  .ContactCardModal {
+    padding: 8px;
+  }
+
+  .rightButtons > button {
+    font-size: 14px;
+  }
+}
