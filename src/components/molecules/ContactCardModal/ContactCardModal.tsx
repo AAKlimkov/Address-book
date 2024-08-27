@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ContactCardModal.module.css';
 import InputField from '@/components/atoms/Input/InputField';
+import Button from '@/components/atoms/Button/Button';
 
 interface ContactCardModalProps {
   firstName: string;
@@ -30,7 +31,9 @@ const ContactCardModal: React.FC<ContactCardModalProps> = ({
   const [editEmail, setEditEmail] = useState(email);
 
   const isSaveDisabled =
-    !editFirstName.trim() && !editLastName.trim() && !editEmail.trim();
+    editFirstName.trim() === '' &&
+    editLastName.trim() === '' &&
+    editEmail.trim() === '';
 
   useEffect(() => {
     setEditFirstName(firstName);
@@ -98,14 +101,22 @@ const ContactCardModal: React.FC<ContactCardModalProps> = ({
       <div className={styles.buttonsContainer}>
         {mode === 'edit' && (
           <div className={styles.leftButtons}>
-            <button onClick={onDelete}>Delete</button>
+            <Button onClick={onDelete} variant="danger">
+              Delete
+            </Button>
           </div>
         )}
         <div className={styles.rightButtons}>
-          <button onClick={onClose}>Cancel</button>
-          <button onClick={handleSave} disabled={isSaveDisabled}>
+          <Button onClick={onClose} variant="secondary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            variant="primary"
+            disabled={isSaveDisabled}
+          >
             Save
-          </button>
+          </Button>
         </div>
       </div>
     </div>

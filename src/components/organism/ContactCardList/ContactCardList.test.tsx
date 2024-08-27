@@ -1,128 +1,134 @@
-// src/components/ContactCardList.test.tsx
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import * as api from '@/components/services/api';
 import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { v4 as uuidv4 } from 'uuid';
 import ContactCardList, { Contact } from './ContactCardList';
+import * as api from '@/components/services/api';
 
 jest.mock('@/components/services/api', () => ({
   fetchContacts: jest.fn(),
   updateContact: jest.fn(),
   deleteContact: jest.fn(),
+  saveContact: jest.fn(),
 }));
 
-const mockContacts: Contact[] = [
-  { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' },
-  { id: 2, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com' },
+const mockUpdateContact = api.updateContact as jest.Mock;
+const mockDeleteContact = api.deleteContact as jest.Mock;
+const mockSaveContact = api.saveContact as jest.Mock;
+
+const dummyContacts: Contact[] = [
+  {
+    id: uuidv4(),
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+  },
 ];
 
-describe('ContactCardList', () => {
+describe('ContactCardList Component', () => {
   beforeEach(() => {
-    (api.fetchContacts as jest.Mock).mockResolvedValue(mockContacts);
-    (api.updateContact as jest.Mock).mockResolvedValue(mockContacts[0]);
-    (api.deleteContact as jest.Mock).mockResolvedValue(undefined);
+    jest.clearAllMocks();
   });
 
-  it('renders contact cards', async () => {
-    render(<ContactCardList contacts={mockContacts} setContacts={jest.fn()} />);
-
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-      expect(screen.getByText('Jane Doe')).toBeInTheDocument();
-    });
-  });
-
-  it('handles errors when fetching contacts', async () => {
-    (api.fetchContacts as jest.Mock).mockRejectedValue(
-      new Error('Failed to fetch contacts')
-    );
-
-    console.error = jest.fn();
-    render(<ContactCardList contacts={[]} setContacts={jest.fn()} />);
-
-    await waitFor(() => {
-      expect(console.error).toHaveBeenCalledWith(
-        'Error loading contacts:',
-        expect.any(Error)
-      );
-    });
-  });
-
-  it('opens and closes the modal on card click', async () => {
-    render(<ContactCardList contacts={mockContacts} setContacts={jest.fn()} />);
-
-    const contactCard = screen.getByText('John Doe');
-    fireEvent.click(contactCard);
-
-    expect(await screen.findByRole('dialog')).toBeInTheDocument();
-
-    const closeButton = screen.getByText('Cancel');
-    fireEvent.click(closeButton);
-
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-  });
-
-  it('saves a contact', async () => {
-    render(<ContactCardList contacts={mockContacts} setContacts={jest.fn()} />);
-
-    const contactCard = screen.getByText('John Doe');
-    fireEvent.click(contactCard);
-
-    const saveButton = screen.getByText('Save');
-    fireEvent.click(saveButton);
-
-    await waitFor(() => {
-      expect(api.updateContact).toHaveBeenCalled();
-    });
-  });
-
-  it('handles errors when saving a contact', async () => {
-    const error = new Error('Failed to save contact');
-    (api.updateContact as jest.Mock).mockRejectedValue(error);
-
-    console.error = jest.fn();
-
-    const setContacts = jest.fn();
-
+  test('renders contact cards', () => {
     render(
-      <ContactCardList contacts={mockContacts} setContacts={setContacts} />
+      <ContactCardList contacts={dummyContacts} setContacts={jest.fn()} />
+    );
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+  });
+
+  test('opens modal when card is clicked', async () => {
+    render(
+      <ContactCardList contacts={dummyContacts} setContacts={jest.fn()} />
     );
 
     fireEvent.click(screen.getByText('John Doe'));
 
-    fireEvent.change(screen.getByPlaceholderText('firstName'), {
-      target: { value: 'John Updated' },
+    const modal = await screen.findByRole('dialog');
+    expect(modal).toBeInTheDocument();
+
+    expect(screen.getByLabelText(/first name/i)).toHaveValue('John');
+    expect(screen.getByLabelText(/last name/i)).toHaveValue('Doe');
+    expect(screen.getByLabelText(/email/i)).toHaveValue('john.doe@example.com');
+  });
+
+  test('adds a new contact', async () => {
+    const setContactsMock = jest.fn();
+    render(
+      <ContactCardList contacts={dummyContacts} setContacts={setContactsMock} />
+    );
+
+    fireEvent.click(screen.getByText('+'));
+
+    const newContact = {
+      id: uuidv4(),
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane.smith@example.com',
+    };
+    mockSaveContact.mockResolvedValue(newContact);
+
+    fireEvent.change(screen.getByLabelText(/first name/i), {
+      target: { value: 'Jane' },
+    });
+    fireEvent.change(screen.getByLabelText(/last name/i), {
+      target: { value: 'Smith' },
+    });
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: 'jane.smith@example.com' },
     });
 
     fireEvent.click(screen.getByText('Save'));
 
     await waitFor(() => {
-      expect(api.updateContact).toHaveBeenCalledWith({
-        id: 1,
-        firstName: 'John Updated',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
+      expect(mockSaveContact).toHaveBeenCalledWith({
+        id: expect.any(String),
+        firstName: 'Jane',
+        lastName: 'Smith',
+        email: 'jane.smith@example.com',
       });
-
-      expect(screen.getByRole('dialog')).toBeInTheDocument();
-
-      expect(console.error).toHaveBeenCalledWith(
-        'Error saving contact:',
-        error
-      );
+      expect(setContactsMock).toHaveBeenCalled();
     });
   });
 
-  it('deletes a contact', async () => {
-    render(<ContactCardList contacts={mockContacts} setContacts={jest.fn()} />);
+  test('edits an existing contact', async () => {
+    const setContactsMock = jest.fn();
+    render(
+      <ContactCardList contacts={dummyContacts} setContacts={setContactsMock} />
+    );
 
-    const contactCard = screen.getByText('John Doe');
-    fireEvent.click(contactCard);
+    fireEvent.click(screen.getByText('John Doe'));
 
-    const deleteButton = screen.getByText('Delete');
-    fireEvent.click(deleteButton);
+    fireEvent.change(screen.getByLabelText(/first name/i), {
+      target: { value: 'Johnny' },
+    });
+
+    fireEvent.click(screen.getByText('Save'));
 
     await waitFor(() => {
-      expect(api.deleteContact).toHaveBeenCalledWith(1);
+      expect(mockUpdateContact).toHaveBeenCalledWith({
+        id: dummyContacts[0].id,
+        firstName: 'Johnny',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+      });
+      expect(setContactsMock).toHaveBeenCalled();
+    });
+  });
+
+  test('deletes a contact', async () => {
+    const setContactsMock = jest.fn();
+    render(
+      <ContactCardList contacts={dummyContacts} setContacts={setContactsMock} />
+    );
+
+    fireEvent.click(screen.getByText('John Doe'));
+
+    fireEvent.click(screen.getByText('Delete'));
+
+    await waitFor(() => {
+      expect(mockDeleteContact).toHaveBeenCalledWith(dummyContacts[0].id);
+      expect(setContactsMock).toHaveBeenCalled();
     });
   });
 });

@@ -54,7 +54,7 @@ export const updateContact = async (contact: Contact): Promise<Contact> => {
   }
 };
 
-export const deleteContact = async (contactId: number): Promise<void> => {
+export const deleteContact = async (contactId: string): Promise<void> => {
   try {
     const response = await fetch(
       `http://localhost:3001/contacts/${contactId}`,

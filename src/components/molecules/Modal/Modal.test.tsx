@@ -1,5 +1,3 @@
-// src/components/molecules/Modal/Modal.test.tsx
-
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Modal from './Modal';
@@ -38,5 +36,14 @@ describe('Modal', () => {
     fireEvent.click(modalContent);
 
     expect(onClose).not.toHaveBeenCalled();
+  });
+
+  test('calls onClose when Escape key is pressed', () => {
+    const onClose = jest.fn();
+    renderModal(onClose);
+
+    fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

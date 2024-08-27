@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ContactCardModal from './components/molecules/ContactCardModal/ContactCardModal';
 import Modal from './components/molecules/Modal/Modal';
-import ContactCardList from './components/organism/ContactCardList/ContactCardList';
+import ContactCardList, {
+  Contact,
+} from './components/organism/ContactCardList/ContactCardList';
 import { saveContact, fetchContacts } from './components/services/api';
-
-interface Contact {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+import Button from './components/atoms/Button/Button';
+import styles from './App.module.css';
 
 const App: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -19,6 +16,11 @@ const App: React.FC = () => {
     lastName: '',
     email: '',
   });
+
+  const refetchContacts = async () => {
+    const contactsData = await fetchContacts();
+    setContacts(contactsData);
+  };
 
   const handleOpenModal = () => {
     setNewContact({ firstName: '', lastName: '', email: '' });
@@ -30,16 +32,12 @@ const App: React.FC = () => {
   };
 
   const handleSaveContact = async (contact: Contact) => {
-    try {
-      const savedContact: Contact = await saveContact(contact);
-      setContacts((prevContacts) => [...prevContacts, savedContact]);
-      handleCloseModal();
-    } catch (error) {
-      console.error('Error saving contact:', error);
-    }
+    await saveContact(contact);
+    handleCloseModal();
+    refetchContacts();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const loadContacts = async () => {
       try {
         const data = await fetchContacts();
@@ -54,23 +52,32 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Contact List</h1>
-      <button onClick={handleOpenModal}>Add new contact</button>
-      <ContactCardList contacts={contacts} setContacts={setContacts} />
+      <h1 className={styles.header}>Contact List</h1>
+      <div className={styles.content}>
+        <Button
+          onClick={handleOpenModal}
+          variant="primary"
+          className={`${styles.addButton} `}
+        >
+          Add new contact
+        </Button>
 
-      {isModalOpen && (
-        <Modal onClose={handleCloseModal}>
-          <ContactCardModal
-            firstName={newContact.firstName}
-            lastName={newContact.lastName}
-            email={newContact.email}
-            onSave={handleSaveContact}
-            onDelete={() => {}}
-            onClose={handleCloseModal}
-            mode="add"
-          />
-        </Modal>
-      )}
+        <ContactCardList contacts={contacts} setContacts={setContacts} />
+
+        {isModalOpen && (
+          <Modal onClose={handleCloseModal}>
+            <ContactCardModal
+              firstName={newContact.firstName}
+              lastName={newContact.lastName}
+              email={newContact.email}
+              onSave={handleSaveContact}
+              onDelete={() => {}}
+              onClose={handleCloseModal}
+              mode="add"
+            />
+          </Modal>
+        )}
+      </div>
     </div>
   );
 };

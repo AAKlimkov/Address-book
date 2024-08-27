@@ -6,6 +6,7 @@ interface ButtonProps {
   disabled?: boolean;
   variant: 'primary' | 'secondary' | 'danger';
   children?: React.ReactNode | string;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -13,12 +14,13 @@ const Button: React.FC<ButtonProps> = ({
   children,
   variant,
   disabled = false,
+  className = '',
 }) => {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`${styles.button} ${styles[variant]}`}
+      className={`${styles.button} ${styles[variant]}  ${className}`}
     >
       {children}
     </button>

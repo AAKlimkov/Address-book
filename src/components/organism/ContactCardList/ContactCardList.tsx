@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './ContactCardList.module.css';
 import Modal from '@/components/molecules/Modal/Modal';
 import ContactCard from '@/components/molecules/ContactCard/ContactCard';
@@ -7,6 +8,7 @@ import {
   fetchContacts,
   updateContact,
   deleteContact,
+  saveContact,
 } from '@/components/services/api';
 
 interface CardListProps {
@@ -15,7 +17,7 @@ interface CardListProps {
 }
 
 export interface Contact {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -27,16 +29,13 @@ const ContactCardList: React.FC<CardListProps> = ({
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<null | Contact>(null);
-  const [showAddButton, setShowAddButton] = useState(true); // State for managing button visibility
+  const [showAddButton, setShowAddButton] = useState(true);
+  const [mode, setMode] = useState<'edit' | 'add'>('edit');
 
   useEffect(() => {
     const loadContacts = async () => {
-      try {
-        const data = await fetchContacts();
-        setContacts(data);
-      } catch (error) {
-        console.error('Error loading contacts:', error);
-      }
+      const data = await fetchContacts();
+      setContacts(data);
     };
 
     loadContacts();
@@ -45,49 +44,43 @@ const ContactCardList: React.FC<CardListProps> = ({
   const handleCardClick = (contact: Contact) => {
     setSelectedContact(contact);
     setModalOpen(true);
-    setShowAddButton(false); // Hide add button when editing
+    setShowAddButton(false);
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedContact(null);
-    setShowAddButton(true); // Show add button when modal is closed
+    setShowAddButton(true);
   };
 
-  const handleSaveContact = async (updatedContact: Contact) => {
-    try {
-      const updatedContactFromServer = await updateContact(updatedContact);
+  const refetchContacts = async () => {
+    const contactsData = await fetchContacts();
+    setContacts(contactsData);
+  };
 
-      setContacts((prevContacts) =>
-        prevContacts.map((contact) =>
-          contact.id === updatedContactFromServer.id
-            ? updatedContactFromServer
-            : contact
-        )
-      );
-
+  const handleDelete = async () => {
+    if (selectedContact) {
+      await deleteContact(selectedContact.id);
       handleCloseModal();
-    } catch (error) {
-      console.error('Error saving contact:', error);
+      refetchContacts();
     }
   };
 
-  const handleDeleteContact = async (contactId: number) => {
-    try {
-      await deleteContact(contactId);
-      setContacts((prevContacts) =>
-        prevContacts.filter((contact) => contact.id !== contactId)
-      );
-      handleCloseModal();
-    } catch (error) {
-      console.error('Error deleting contact:', error);
+  const handleSave = async (contact: Contact) => {
+    if (mode === 'edit') {
+      await updateContact(contact);
+    } else {
+      await saveContact(contact);
     }
+    handleCloseModal();
+    refetchContacts();
   };
 
-  const handleAddContact = () => {
-    setSelectedContact(null);
+  const handleAddNewContact = () => {
+    const newId = uuidv4();
+    setSelectedContact({ id: newId, firstName: '', lastName: '', email: '' });
+    setMode('add');
     setModalOpen(true);
-    setShowAddButton(false); // Hide add button when adding
   };
 
   return (
@@ -101,7 +94,7 @@ const ContactCardList: React.FC<CardListProps> = ({
       {showAddButton && (
         <button
           className={`${styles.addButton} ${styles.roundButton}`}
-          onClick={handleAddContact}
+          onClick={handleAddNewContact}
         >
           +
         </button>
@@ -114,11 +107,9 @@ const ContactCardList: React.FC<CardListProps> = ({
             lastName={selectedContact?.lastName || ''}
             email={selectedContact?.email || ''}
             onSave={(updatedContact) =>
-              handleSaveContact({ ...selectedContact, ...updatedContact })
+              handleSave({ ...selectedContact, ...updatedContact })
             }
-            onDelete={() =>
-              selectedContact && handleDeleteContact(selectedContact.id)
-            }
+            onDelete={handleDelete}
             onClose={handleCloseModal}
             mode={selectedContact ? 'edit' : 'add'}
           />

@@ -13,9 +13,9 @@
 
 .modalContent {
   background: white;
-  padding: 20px;
   border-radius: 8px;
   position: relative;
+  min-width: 300px;
 }
 
 .closeButton {
