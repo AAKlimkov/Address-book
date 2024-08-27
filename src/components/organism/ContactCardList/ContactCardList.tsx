@@ -45,6 +45,7 @@ const ContactCardList: React.FC<CardListProps> = ({
     setSelectedContact(contact);
     setModalOpen(true);
     setShowAddButton(false);
+    setMode('edit');
   };
 
   const handleCloseModal = () => {
@@ -111,7 +112,7 @@ const ContactCardList: React.FC<CardListProps> = ({
             }
             onDelete={handleDelete}
             onClose={handleCloseModal}
-            mode={selectedContact ? 'edit' : 'add'}
+            mode="edit"
           />
         </Modal>
       )}

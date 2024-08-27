@@ -1,58 +1,40 @@
 {
   "contacts": [
     {
-      "id": "4ceb",
+      "id": "414de630-bbbc-45bc-b45f-f1276955b56e",
+      "firstName": "Lizaveta",
+      "lastName": "Klimkova",
+      "email": "lyzavirus@mail.ru"
+    },
+    {
+      "id": "8ffe03db-fcf4-4a23-9b21-067d1a19a1eb",
       "firstName": "Андрей",
       "lastName": "Front",
       "email": "te@te.com"
     },
     {
-      "id": "17a5",
-      "firstName": "Andrei",
-      "lastName": "Front",
-      "email": "te@te.com"
-    },
-    {
-      "id": "452a",
-      "firstName": "Andrei",
-      "lastName": "Front11",
-      "email": "te@te.com"
-    },
-    {
-      "id": "9073",
+      "id": "d4c5dbc4-fd58-4e47-8655-dce36942ee88",
       "firstName": "Андрей",
       "lastName": "Front",
       "email": "te@te.com"
     },
     {
-      "id": "97dd",
-      "firstName": "Андрей",
-      "lastName": "Front",
+      "id": "0c56dd92-59de-45b2-9385-4341fbb726fb",
+      "firstName": "Андрей111",
+      "lastName": "Front1",
       "email": "te@te.com"
     },
     {
-      "id": "89b0",
+      "id": "34f6",
       "firstName": "Andrei",
       "lastName": "Front11",
       "email": "te@te.com"
     },
     {
-      "id": "320a",
-      "firstName": "Andrei",
-      "lastName": "Front",
-      "email": "te@te.com"
-    },
-    {
-      "id": "554c",
+      "id": "e8ab",
       "firstName": "Андрей",
-      "lastName": "Front",
-      "email": "te@te.com"
-    },
-    {
-      "id": "8f8a",
-      "firstName": "Андрей",
-      "lastName": "Front",
-      "email": "te@te.com"
+      "lastName": "Климкоgh",
+      "email": "klimkov@nca.by"
     }
   ]
 }
