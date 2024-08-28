@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './ContactCardList.module.css';
 import Modal from '@/components/molecules/Modal/Modal';
@@ -32,14 +32,14 @@ const ContactCardList: React.FC<CardListProps> = ({
   const [showAddButton, setShowAddButton] = useState(true);
   const [mode, setMode] = useState<'edit' | 'add'>('edit');
 
-  useEffect(() => {
-    const loadContacts = async () => {
-      const data = await fetchContacts();
-      setContacts(data);
-    };
-
-    loadContacts();
+  const loadContacts = useCallback(async () => {
+    const data = await fetchContacts();
+    setContacts(data);
   }, [setContacts]);
+
+  useEffect(() => {
+    loadContacts();
+  }, [loadContacts]);
 
   const handleCardClick = (contact: Contact) => {
     setSelectedContact(contact);
@@ -54,16 +54,11 @@ const ContactCardList: React.FC<CardListProps> = ({
     setShowAddButton(true);
   };
 
-  const refetchContacts = async () => {
-    const contactsData = await fetchContacts();
-    setContacts(contactsData);
-  };
-
   const handleDelete = async () => {
     if (selectedContact) {
       await deleteContact(selectedContact.id);
       handleCloseModal();
-      refetchContacts();
+      loadContacts();
     }
   };
 
@@ -74,7 +69,7 @@ const ContactCardList: React.FC<CardListProps> = ({
       await saveContact(contact);
     }
     handleCloseModal();
-    refetchContacts();
+    loadContacts();
   };
 
   const handleAddNewContact = () => {

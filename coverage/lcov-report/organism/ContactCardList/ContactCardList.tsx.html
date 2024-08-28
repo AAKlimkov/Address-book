@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>53/53</span>
+                <span class='fraction'>50/50</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.18% </span>
+                <span class="strong">88% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>23/27</span>
+                <span class='fraction'>22/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>47/47</span>
             </div>
         
             
@@ -181,11 +181,7 @@
 <a name='L116'></a><a href='#L116'>116</a>
 <a name='L117'></a><a href='#L117'>117</a>
 <a name='L118'></a><a href='#L118'>118</a>
-<a name='L119'></a><a href='#L119'>119</a>
-<a name='L120'></a><a href='#L120'>120</a>
-<a name='L121'></a><a href='#L121'>121</a>
-<a name='L122'></a><a href='#L122'>122</a>
-<a name='L123'></a><a href='#L123'>123</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L119'></a><a href='#L119'>119</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -220,11 +216,11 @@
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -232,15 +228,11 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -307,7 +299,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './ContactCardList.module.css';
 import Modal from '@/components/molecules/Modal/Modal';
@@ -341,19 +333,20 @@ const ContactCardList: React.FC&lt;CardListProps&gt; = ({
   const [showAddButton, setShowAddButton] = useState(true);
   const [mode, setMode] = useState&lt;'edit' | 'add'&gt;('edit');
 &nbsp;
-  useEffect(() =&gt; {
-    const loadContacts = async () =&gt; {
-      const data = await fetchContacts();
-      setContacts(data);
-    };
-&nbsp;
-    loadContacts();
+  const loadContacts = useCallback(async () =&gt; {
+    const data = await fetchContacts();
+    setContacts(data);
   }, [setContacts]);
+&nbsp;
+  useEffect(() =&gt; {
+    loadContacts();
+  }, [loadContacts]);
 &nbsp;
   const handleCardClick = (contact: Contact) =&gt; {
     setSelectedContact(contact);
     setModalOpen(true);
     setShowAddButton(false);
+    setMode('edit');
   };
 &nbsp;
   const handleCloseModal = () =&gt; {
@@ -362,16 +355,11 @@ const ContactCardList: React.FC&lt;CardListProps&gt; = ({
     setShowAddButton(true);
   };
 &nbsp;
-  const refetchContacts = async () =&gt; {
-    const contactsData = await fetchContacts();
-    setContacts(contactsData);
-  };
-&nbsp;
   const handleDelete = async () =&gt; {
     if (selectedContact) {
       await deleteContact(selectedContact.id);
       handleCloseModal();
-      refetchContacts();
+      loadContacts();
     }
   };
 &nbsp;
@@ -382,7 +370,7 @@ const ContactCardList: React.FC&lt;CardListProps&gt; = ({
       await saveContact(contact);
     }
     handleCloseModal();
-    refetchContacts();
+    loadContacts();
   };
 &nbsp;
   const handleAddNewContact = () =&gt; {
@@ -420,7 +408,7 @@ const ContactCardList: React.FC&lt;CardListProps&gt; = ({
             }
             onDelete={handleDelete}
             onClose={handleCloseModal}
-            mode={selectedContact ? 'edit' : <span class="branch-1 cbranch-no" title="branch not covered" >'add'}</span>
+            mode="edit"
           /&gt;
         &lt;/Modal&gt;
       )}
@@ -436,7 +424,7 @@ export default ContactCardList;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-08-27T12:23:25.357Z
+                at 2024-08-28T13:00:55.772Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

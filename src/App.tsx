@@ -17,11 +17,11 @@ const App: React.FC = () => {
     email: '',
   });
 
-  const refetchContacts = async () => {
-    const contactsData = await fetchContacts();
-    setContacts(contactsData);
+  const loadContacts = async () => {
+    const data = await fetchContacts();
+    setContacts(data);
   };
-
+  
   const handleOpenModal = () => {
     setNewContact({ firstName: '', lastName: '', email: '' });
     setModalOpen(true);
@@ -34,19 +34,10 @@ const App: React.FC = () => {
   const handleSaveContact = async (contact: Contact) => {
     await saveContact(contact);
     handleCloseModal();
-    refetchContacts();
+    loadContacts();
   };
 
   useEffect(() => {
-    const loadContacts = async () => {
-      try {
-        const data = await fetchContacts();
-        setContacts(data);
-      } catch (error) {
-        console.error('Error loading contacts:', error);
-      }
-    };
-
     loadContacts();
   }, []);
 
