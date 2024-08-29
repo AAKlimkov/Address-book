@@ -95,6 +95,24 @@
       "firstName": "Ирина",
       "lastName": "Киселева",
       "email": "nightzhl@gmail.com"
+    },
+    {
+      "id": "352e",
+      "firstName": "Андрей",
+      "lastName": "Климко",
+      "email": "klimkov@nca.by"
+    },
+    {
+      "id": "fe237425-29a0-4949-a1d1-6c1f28109374",
+      "firstName": "Ирина",
+      "lastName": "Киселева",
+      "email": "nightzhl@gmail.com"
+    },
+    {
+      "id": "b517",
+      "firstName": "Andrei",
+      "lastName": "Front11",
+      "email": "te@te.com"
     }
   ]
 }

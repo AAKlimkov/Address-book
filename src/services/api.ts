@@ -1,72 +1,97 @@
-import { Contact } from '../components/organism/ContactCardList/ContactCardList';
+import { UseContactsService, Contact } from '@/types';
+import { useState, useEffect, useCallback } from 'react';
 
-export const fetchContacts = async (): Promise<Contact[]> => {
-  try {
-    const response = await fetch('http://localhost:3001/contacts');
-    if (!response.ok) {
-      throw new Error('Failed to fetch contacts');
+export const useContactsService = (): UseContactsService => {
+  const [data, setData] = useState<Contact[] | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const fetchContacts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:3001/contacts');
+      if (!response.ok) {
+        throw new Error('Failed to fetch contacts');
+      }
+      const result = await response.json();
+
+      setData(result);
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setLoading(false);
     }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching contacts:', error);
-    throw error;
-  }
-};
+  }, []);
 
-export const saveContact = async (contact: Contact): Promise<Contact> => {
-  try {
-    const response = await fetch('http://localhost:3001/contacts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(contact),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to save contact');
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error saving contact:', error);
-    throw error;
-  }
-};
+  useEffect(() => {
+    fetchContacts();
+  }, [fetchContacts]);
 
-export const updateContact = async (contact: Contact): Promise<Contact> => {
-  try {
-    const response = await fetch(
-      `http://localhost:3001/contacts/${contact.id}`,
-      {
-        method: 'PUT',
+  const addContact = async (contact: Contact): Promise<void> => {
+    try {
+      const response = await fetch('http://localhost:3001/contacts', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(contact),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to save contact');
       }
-    );
-    if (!response.ok) {
-      throw new Error('Failed to update contact');
+      await response.json();
+      fetchContacts();
+    } catch (err) {
+      setError(err as Error);
     }
-    return await response.json();
-  } catch (error) {
-    console.error('Error updating contact:', error);
-    throw error;
-  }
-};
+  };
 
-export const deleteContact = async (contactId: string): Promise<void> => {
-  try {
-    const response = await fetch(
-      `http://localhost:3001/contacts/${contactId}`,
-      {
-        method: 'DELETE',
+  const updateContact = async (contact: Contact): Promise<void> => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/contacts/${contact.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(contact),
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to update contact');
       }
-    );
-    if (!response.ok) {
-      throw new Error('Failed to delete contact');
+      await response.json();
+      fetchContacts();
+    } catch (err) {
+      setError(err as Error);
     }
-  } catch (error) {
-    console.error('Error deleting contact:', error);
-    throw error;
-  }
+  };
+
+  const deleteContact = async (contactId: string): Promise<void> => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/contacts/${contactId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to delete contact');
+      }
+      fetchContacts();
+    } catch (err) {
+      setError(err as Error);
+    }
+  };
+
+  return {
+    data,
+    error,
+    loading,
+    addContact,
+    updateContact,
+    deleteContact,
+    fetchContacts,
+  };
 };

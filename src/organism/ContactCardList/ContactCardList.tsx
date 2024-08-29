@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './ContactCardList.module.css';
-import Modal from '@/components/molecules/Modal/Modal';
-import ContactCard from '@/components/molecules/ContactCard/ContactCard';
-import ContactCardModal from '@/components/molecules/ContactCardModal/ContactCardModal';
-import { updateContact, deleteContact, saveContact } from '@/services/api';
+
+import { Contact } from '@/types';
+import ContactCard from '@/molecules/ContactCard/ContactCard';
+import { useContactsService } from '@/services/api';
+import Modal from '@/molecules/Modal/Modal';
+import ContactCardModal from '@/molecules/ConctactCardModal/ContactCardModal';
 
 interface CardListProps {
   contacts: Contact[];
 }
 
-export interface Contact {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
-
 const ContactCardList: React.FC<CardListProps> = ({ contacts }) => {
+  const { addContact, deleteContact, updateContact } = useContactsService();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<null | Contact>(null);
   const [showAddButton, setShowAddButton] = useState(true);
@@ -47,7 +43,7 @@ const ContactCardList: React.FC<CardListProps> = ({ contacts }) => {
     if (mode === 'edit') {
       await updateContact(contact);
     } else {
-      await saveContact(contact);
+      await addContact(contact);
     }
     handleCloseModal();
   };

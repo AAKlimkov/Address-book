@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ContactCardModal.module.css';
-import InputField from '@/components/atoms/Input/InputField';
-import Button from '@/components/atoms/Button/Button';
+import InputField from '@/atoms/Input/InputField';
+import Button from '@/atoms/Button/Button';
 
 interface ContactCardModalProps {
   firstName: string;
