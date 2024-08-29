@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ContactCardModal from './components/molecules/ContactCardModal/ContactCardModal';
 import Modal from './components/molecules/Modal/Modal';
+import { v4 as uuidv4 } from 'uuid';
 import ContactCardList, {
   Contact,
 } from './components/organism/ContactCardList/ContactCardList';
-import { saveContact, fetchContacts } from './components/services/api';
+import { saveContact, fetchContacts } from './services/api';
 import Button from './components/atoms/Button/Button';
 import styles from './App.module.css';
 
@@ -12,6 +13,7 @@ const App: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [newContact, setNewContact] = useState({
+    id: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -21,9 +23,10 @@ const App: React.FC = () => {
     const data = await fetchContacts();
     setContacts(data);
   };
-  
+
   const handleOpenModal = () => {
-    setNewContact({ firstName: '', lastName: '', email: '' });
+    const newId = uuidv4();
+    setNewContact({ id: newId, firstName: '', lastName: '', email: '' });
     setModalOpen(true);
   };
 
@@ -53,7 +56,7 @@ const App: React.FC = () => {
           Add new contact
         </Button>
 
-        <ContactCardList contacts={contacts} setContacts={setContacts} />
+        <ContactCardList contacts={contacts} />
 
         {isModalOpen && (
           <Modal onClose={handleCloseModal}>

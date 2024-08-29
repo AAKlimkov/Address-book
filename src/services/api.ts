@@ -1,4 +1,4 @@
-import { Contact } from '../organism/ContactCardList/ContactCardList';
+import { Contact } from '../components/organism/ContactCardList/ContactCardList';
 
 export const fetchContacts = async (): Promise<Contact[]> => {
   try {

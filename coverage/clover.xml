@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1724850055828" clover="3.2.0">
-  <project timestamp="1724850055828" name="All files">
-    <metrics statements="100" coveredstatements="100" conditionals="42" coveredconditionals="39" methods="28" coveredmethods="28" elements="170" coveredelements="167" complexity="0" loc="100" ncloc="100" packages="6" files="6" classes="6"/>
+<coverage generated="1724851194129" clover="3.2.0">
+  <project timestamp="1724851194129" name="All files">
+    <metrics statements="100" coveredstatements="100" conditionals="38" coveredconditionals="35" methods="28" coveredmethods="28" elements="166" coveredelements="163" complexity="0" loc="100" ncloc="100" packages="6" files="6" classes="6"/>
     <package name="atoms.Button">
       <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
       <file name="Button.tsx" path="C:\Users\Andrey\Desktop\innowise\contact-book\src\components\atoms\Button\Button.tsx">
@@ -86,9 +86,9 @@
       </file>
     </package>
     <package name="organism.ContactCardList">
-      <metrics statements="47" coveredstatements="47" conditionals="25" coveredconditionals="22" methods="14" coveredmethods="14"/>
+      <metrics statements="47" coveredstatements="47" conditionals="21" coveredconditionals="18" methods="14" coveredmethods="14"/>
       <file name="ContactCardList.tsx" path="C:\Users\Andrey\Desktop\innowise\contact-book\src\components\organism\ContactCardList\ContactCardList.tsx">
-        <metrics statements="47" coveredstatements="47" conditionals="25" coveredconditionals="22" methods="14" coveredmethods="14"/>
+        <metrics statements="47" coveredstatements="47" conditionals="21" coveredconditionals="18" methods="14" coveredmethods="14"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
