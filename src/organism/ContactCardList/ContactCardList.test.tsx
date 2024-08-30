@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { v4 as uuidv4 } from 'uuid';
 import ContactCardList, { Contact } from './ContactCardList';
-import * as api from '@/components/services/api';
+import * as api from '@/services/api';
 
 jest.mock('@/components/services/api', () => ({
   fetchContacts: jest.fn(),

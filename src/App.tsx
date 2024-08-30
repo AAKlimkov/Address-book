@@ -1,29 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import ContactCardModal from './components/molecules/ContactCardModal/ContactCardModal';
-import Modal from './components/molecules/Modal/Modal';
-import ContactCardList, {
-  Contact,
-} from './components/organism/ContactCardList/ContactCardList';
-import { saveContact, fetchContacts } from './components/services/api';
-import Button from './components/atoms/Button/Button';
+import React, { useState } from 'react';
+
+import Button from './atoms/Button/Button';
 import styles from './App.module.css';
+import ContactCardList from './organism/ContactCardList/ContactCardList';
+import Modal from './molecules/Modal/Modal';
+import CreateCardModal from './molecules/CreateCardModal/CreateCardModal';
+import { Contact } from './types';
+import { useContactsService } from './services/api';
 
 const App: React.FC = () => {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [newContact, setNewContact] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-  });
+  const { data, addContact, refetch } = useContactsService();
 
-  const loadContacts = async () => {
-    const data = await fetchContacts();
-    setContacts(data);
-  };
-  
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const handleOpenModal = () => {
-    setNewContact({ firstName: '', lastName: '', email: '' });
     setModalOpen(true);
   };
 
@@ -32,14 +22,10 @@ const App: React.FC = () => {
   };
 
   const handleSaveContact = async (contact: Contact) => {
-    await saveContact(contact);
+    await addContact(contact);
+    refetch(); // Refetch the contacts after saving a new one
     handleCloseModal();
-    loadContacts();
   };
-
-  useEffect(() => {
-    loadContacts();
-  }, []);
 
   return (
     <div>
@@ -53,21 +39,23 @@ const App: React.FC = () => {
           Add new contact
         </Button>
 
-        <ContactCardList contacts={contacts} setContacts={setContacts} />
+        {data && <ContactCardList contacts={data} />}
 
         {isModalOpen && (
           <Modal onClose={handleCloseModal}>
-            <ContactCardModal
-              firstName={newContact.firstName}
-              lastName={newContact.lastName}
-              email={newContact.email}
+            <CreateCardModal
               onSave={handleSaveContact}
-              onDelete={() => {}}
               onClose={handleCloseModal}
-              mode="add"
             />
           </Modal>
         )}
+
+        <button
+          className={`${styles.addButtonRound} ${styles.roundButton}`}
+          onClick={handleOpenModal}
+        >
+          +
+        </button>
       </div>
     </div>
   );

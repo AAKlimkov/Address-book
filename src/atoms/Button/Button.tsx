@@ -1,13 +1,11 @@
 import React from 'react';
+import { ComponentProps } from 'react';
+
 import styles from './Button.module.css';
 
-interface ButtonProps {
-  onClick: () => void;
-  disabled?: boolean;
+type ButtonProps = ComponentProps<'button'> & {
   variant: 'primary' | 'secondary' | 'danger';
-  children?: React.ReactNode | string;
-  className?: string;
-}
+};
 
 const Button: React.FC<ButtonProps> = ({
   onClick,
