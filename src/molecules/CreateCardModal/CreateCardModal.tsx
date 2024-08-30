@@ -50,7 +50,7 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({
 
   return (
     <div className={styles.CreateCardModal}>
-      <h2>'Create Contact'</h2>
+      <h2>Create Contact</h2>
       <div className={styles.inputRow}>
         <div className={styles.inputField}>
           <InputField

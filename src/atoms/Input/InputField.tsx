@@ -1,16 +1,11 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import styles from './InputField.module.css';
 
-interface InputFieldProps {
-  id: string;
-  type: string;
-  value: string;
+type InputFieldProps = ComponentProps<'input'> & {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
   error?: boolean;
-  disabled?: boolean;
   label?: string;
-}
+};
 
 const InputField: React.FC<InputFieldProps> = ({
   id,

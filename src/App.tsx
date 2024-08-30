@@ -9,13 +9,11 @@ import { Contact } from './types';
 import { useContactsService } from './services/api';
 
 const App: React.FC = () => {
-  const { data, addContact } = useContactsService();
+  const { data, addContact, refetch } = useContactsService();
 
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = () => {
-    // const newId = uuidv4();
-    // setNewContact({ id: newId, firstName: '', lastName: '', email: '' });
     setModalOpen(true);
   };
 
@@ -25,6 +23,7 @@ const App: React.FC = () => {
 
   const handleSaveContact = async (contact: Contact) => {
     await addContact(contact);
+    refetch(); // Refetch the contacts after saving a new one
     handleCloseModal();
   };
 
@@ -50,6 +49,13 @@ const App: React.FC = () => {
             />
           </Modal>
         )}
+
+        <button
+          className={`${styles.addButtonRound} ${styles.roundButton}`}
+          onClick={handleOpenModal}
+        >
+          +
+        </button>
       </div>
     </div>
   );

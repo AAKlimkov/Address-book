@@ -1,26 +1,25 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ContactCardModal from './EditCardModal';
+import EditCardModal from './EditCardModal';
 
 const mockOnSave = jest.fn();
 const mockOnDelete = jest.fn();
 const mockOnClose = jest.fn();
 
-describe('ContactCardModal', () => {
+describe('EditCardModal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('renders with initial values', () => {
     render(
-      <ContactCardModal
+      <EditCardModal
         firstName="John"
         lastName="Doe"
         email="john.doe@example.com"
         onSave={mockOnSave}
         onDelete={mockOnDelete}
         onClose={mockOnClose}
-        mode="add"
       />
     );
 
@@ -33,14 +32,13 @@ describe('ContactCardModal', () => {
 
   test('updates input fields correctly', () => {
     render(
-      <ContactCardModal
+      <EditCardModal
         firstName="John"
         lastName="Doe"
         email="john.doe@example.com"
         onSave={mockOnSave}
         onDelete={mockOnDelete}
         onClose={mockOnClose}
-        mode="add"
       />
     );
 
@@ -67,14 +65,13 @@ describe('ContactCardModal', () => {
 
   test('calls onSave with updated values', () => {
     render(
-      <ContactCardModal
+      <EditCardModal
         firstName="John"
         lastName="Doe"
         email="john.doe@example.com"
         onSave={mockOnSave}
         onDelete={mockOnDelete}
         onClose={mockOnClose}
-        mode="add"
       />
     );
 
@@ -98,14 +95,13 @@ describe('ContactCardModal', () => {
 
   test('calls onDelete when delete button is clicked', () => {
     render(
-      <ContactCardModal
+      <EditCardModal
         firstName="John"
         lastName="Doe"
         email="john.doe@example.com"
         onSave={mockOnSave}
         onDelete={mockOnDelete}
         onClose={mockOnClose}
-        mode="edit"
       />
     );
 
@@ -115,14 +111,13 @@ describe('ContactCardModal', () => {
 
   test('calls onClose when close button is clicked', () => {
     render(
-      <ContactCardModal
+      <EditCardModal
         firstName="John"
         lastName="Doe"
         email="john.doe@example.com"
         onSave={mockOnSave}
         onDelete={mockOnDelete}
         onClose={mockOnClose}
-        mode="add"
       />
     );
 
@@ -132,14 +127,13 @@ describe('ContactCardModal', () => {
 
   test('disables Save button when all fields are empty', () => {
     render(
-      <ContactCardModal
+      <EditCardModal
         firstName=""
         lastName=""
         email=""
         onSave={mockOnSave}
         onDelete={mockOnDelete}
         onClose={mockOnClose}
-        mode="add"
       />
     );
 
@@ -148,14 +142,13 @@ describe('ContactCardModal', () => {
 
   test('enables Save button when fields are not empty', () => {
     render(
-      <ContactCardModal
+      <EditCardModal
         firstName="John"
         lastName="Doe"
         email="john.doe@example.com"
         onSave={mockOnSave}
         onDelete={mockOnDelete}
         onClose={mockOnClose}
-        mode="add"
       />
     );
 

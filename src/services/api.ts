@@ -1,10 +1,10 @@
-import { UseContactsService, Contact } from '@/types';
 import { useState, useEffect, useCallback } from 'react';
+import { Contact } from '@/types';
 
-export const useContactsService = (): UseContactsService => {
-  const [data, setData] = useState<Contact[] | null>(null);
-  const [error, setError] = useState<Error | null>(null);
+export const useContactsService = () => {
+  const [data, setData] = useState<Contact[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchContacts = useCallback(async () => {
     setLoading(true);
@@ -14,10 +14,9 @@ export const useContactsService = (): UseContactsService => {
         throw new Error('Failed to fetch contacts');
       }
       const result = await response.json();
-
       setData(result);
     } catch (err) {
-      setError(err as Error);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -27,7 +26,7 @@ export const useContactsService = (): UseContactsService => {
     fetchContacts();
   }, [fetchContacts]);
 
-  const addContact = async (contact: Contact): Promise<void> => {
+  const addContact = async (contact: Contact) => {
     try {
       const response = await fetch('http://localhost:3001/contacts', {
         method: 'POST',
@@ -37,16 +36,17 @@ export const useContactsService = (): UseContactsService => {
         body: JSON.stringify(contact),
       });
       if (!response.ok) {
-        throw new Error('Failed to save contact');
+        throw new Error('Failed to add contact');
       }
       await response.json();
-      fetchContacts();
+      await fetchContacts(); // Refetch data after adding a contact
     } catch (err) {
-      setError(err as Error);
+      setError('Error adding contact');
+      throw new Error(err);
     }
   };
 
-  const updateContact = async (contact: Contact): Promise<void> => {
+  const updateContact = async (contact: Contact) => {
     try {
       const response = await fetch(
         `http://localhost:3001/contacts/${contact.id}`,
@@ -62,36 +62,35 @@ export const useContactsService = (): UseContactsService => {
         throw new Error('Failed to update contact');
       }
       await response.json();
-      fetchContacts();
+      await fetchContacts(); // Refetch data after updating a contact
     } catch (err) {
-      setError(err as Error);
+      setError('Error updating contact');
+      throw new Error(err);
     }
   };
 
-  const deleteContact = async (contactId: string): Promise<void> => {
+  const deleteContact = async (id: string) => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/contacts/${contactId}`,
-        {
-          method: 'DELETE',
-        }
-      );
+      const response = await fetch(`http://localhost:3001/contacts/${id}`, {
+        method: 'DELETE',
+      });
       if (!response.ok) {
         throw new Error('Failed to delete contact');
       }
-      fetchContacts();
+      await fetchContacts(); // Refetch data after deleting a contact
     } catch (err) {
-      setError(err as Error);
+      setError('Error deleting contact');
+      throw new Error(err);
     }
   };
 
   return {
     data,
-    error,
     loading,
+    error,
     addContact,
     updateContact,
     deleteContact,
-    fetchContacts,
+    refetch: fetchContacts,
   };
 };

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import styles from './ContactCardModal.module.css';
+import styles from './EditCardModal.module.css';
 import InputField from '@/atoms/Input/InputField';
 import Button from '@/atoms/Button/Button';
 
-interface ContactCardModalProps {
+interface EditCardModalProps {
   firstName: string;
   lastName: string;
   email: string;
@@ -14,17 +14,15 @@ interface ContactCardModalProps {
   }) => void;
   onDelete: () => void;
   onClose: () => void;
-  mode: 'edit' | 'add';
 }
 
-const ContactCardModal: React.FC<ContactCardModalProps> = ({
+const EditCardModal: React.FC<EditCardModalProps> = ({
   firstName,
   lastName,
   email,
   onSave,
   onDelete,
   onClose,
-  mode,
 }) => {
   const [editFirstName, setEditFirstName] = useState(firstName);
   const [editLastName, setEditLastName] = useState(lastName);
@@ -64,8 +62,8 @@ const ContactCardModal: React.FC<ContactCardModalProps> = ({
   };
 
   return (
-    <div className={styles.ContactCardModal}>
-      <h2>{mode === 'edit' ? 'Edit Contact' : 'Create Contact'}</h2>
+    <div className={styles.EditCardModal}>
+      <h2>'Edit Contact' </h2>
       <div className={styles.inputRow}>
         <div className={styles.inputField}>
           <InputField
@@ -99,13 +97,12 @@ const ContactCardModal: React.FC<ContactCardModalProps> = ({
         />
       </div>
       <div className={styles.buttonsContainer}>
-        {mode === 'edit' && (
-          <div className={styles.leftButtons}>
-            <Button onClick={onDelete} variant="danger">
-              Delete
-            </Button>
-          </div>
-        )}
+        <div className={styles.leftButtons}>
+          <Button onClick={onDelete} variant="danger">
+            Delete
+          </Button>
+        </div>
+
         <div className={styles.rightButtons}>
           <Button onClick={onClose} variant="secondary">
             Cancel
@@ -123,4 +120,4 @@ const ContactCardModal: React.FC<ContactCardModalProps> = ({
   );
 };
 
-export default ContactCardModal;
+export default EditCardModal;

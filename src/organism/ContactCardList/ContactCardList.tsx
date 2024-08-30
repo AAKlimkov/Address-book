@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import styles from './ContactCardList.module.css';
 
 import { Contact } from '@/types';
@@ -13,46 +12,32 @@ interface CardListProps {
 }
 
 const ContactCardList: React.FC<CardListProps> = ({ contacts }) => {
-  const { addContact, deleteContact, updateContact } = useContactsService();
+  const { deleteContact, updateContact, refetch } = useContactsService();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<null | Contact>(null);
-  const [showAddButton, setShowAddButton] = useState(true);
-  const [mode, setMode] = useState<'edit' | 'add'>('edit');
 
   const handleCardClick = (contact: Contact) => {
     setSelectedContact(contact);
     setModalOpen(true);
-    setShowAddButton(false);
-    setMode('edit');
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedContact(null);
-    setShowAddButton(true);
   };
 
   const handleDelete = async () => {
     if (selectedContact) {
       await deleteContact(selectedContact.id);
+      refetch(); // Refetch contacts after deleting
       handleCloseModal();
     }
   };
 
   const handleSave = async (contact: Contact) => {
-    if (mode === 'edit') {
-      await updateContact(contact);
-    } else {
-      await addContact(contact);
-    }
+    await updateContact(contact);
+    refetch();
     handleCloseModal();
-  };
-
-  const handleAddNewContact = () => {
-    const newId = uuidv4();
-    setSelectedContact({ id: newId, firstName: '', lastName: '', email: '' });
-    setMode('add');
-    setModalOpen(true);
   };
 
   return (
@@ -62,15 +47,6 @@ const ContactCardList: React.FC<CardListProps> = ({ contacts }) => {
           <ContactCard {...contact} onClick={() => handleCardClick(contact)} />
         </div>
       ))}
-
-      {showAddButton && (
-        <button
-          className={`${styles.addButton} ${styles.roundButton}`}
-          onClick={handleAddNewContact}
-        >
-          +
-        </button>
-      )}
 
       {isModalOpen && (
         <Modal onClose={handleCloseModal}>

@@ -7,42 +7,6 @@
       "email": "lyzavirus@mail.ru"
     },
     {
-      "id": "8ffe03db-fcf4-4a23-9b21-067d1a19a1eb",
-      "firstName": "Андрей",
-      "lastName": "Front",
-      "email": "te@te.com"
-    },
-    {
-      "id": "d4c5dbc4-fd58-4e47-8655-dce36942ee88",
-      "firstName": "Андрей",
-      "lastName": "Front",
-      "email": "te@te.com"
-    },
-    {
-      "id": "0c56dd92-59de-45b2-9385-4341fbb726fb",
-      "firstName": "Андрей111",
-      "lastName": "Front1",
-      "email": "te@te.com"
-    },
-    {
-      "id": "34f6",
-      "firstName": "Andrei",
-      "lastName": "Front11",
-      "email": "te@te.com"
-    },
-    {
-      "id": "e8ab",
-      "firstName": "Андрей",
-      "lastName": "Климкоgh",
-      "email": "klimkov@nca.by"
-    },
-    {
-      "id": "3af5",
-      "firstName": "Andrei",
-      "lastName": "Front11",
-      "email": "te@te.com"
-    },
-    {
       "id": "4536",
       "firstName": "Ирина",
       "lastName": "Киселева",
@@ -57,7 +21,7 @@
     {
       "id": "f23ee43f-963c-48a7-bafe-ca06ea36d3a7",
       "firstName": "Андрей",
-      "lastName": "Климко",
+      "lastName": "Климко1111111",
       "email": "klimkov@nca.by"
     },
     {
@@ -68,12 +32,6 @@
     },
     {
       "id": "335f3df4-e906-48c4-966f-a9f80e6916ca",
-      "firstName": "Andrei",
-      "lastName": "Front11",
-      "email": "te@te.com"
-    },
-    {
-      "id": "56c2e729-192a-42fc-aaf6-939b6bfba271",
       "firstName": "Andrei",
       "lastName": "Front11",
       "email": "te@te.com"
@@ -91,12 +49,6 @@
       "email": "te@te.com"
     },
     {
-      "id": "aae1d96e-99e3-4810-b09d-ab49f290b05b",
-      "firstName": "Ирина",
-      "lastName": "Киселева",
-      "email": "nightzhl@gmail.com"
-    },
-    {
       "id": "352e",
       "firstName": "Андрей",
       "lastName": "Климко",
@@ -109,10 +61,52 @@
       "email": "nightzhl@gmail.com"
     },
     {
-      "id": "b517",
-      "firstName": "Andrei",
-      "lastName": "Front11",
-      "email": "te@te.com"
+      "id": "0a97",
+      "firstName": "Андрей",
+      "lastName": "Климко",
+      "email": "klimkov@nca.by"
+    },
+    {
+      "id": "0457",
+      "firstName": "Андрей",
+      "lastName": "Климко",
+      "email": "klimkov@nca.by"
+    },
+    {
+      "id": "ff97",
+      "firstName": "Андрей",
+      "lastName": "Климко",
+      "email": "klimkov@nca.by"
+    },
+    {
+      "id": "7013",
+      "firstName": "Андрей",
+      "lastName": "Климко",
+      "email": "klimkov@nca.by"
+    },
+    {
+      "id": "c7cc",
+      "firstName": "Андрей",
+      "lastName": "Климко",
+      "email": "klimkov@nca.by"
+    },
+    {
+      "id": "1978",
+      "firstName": "Андрей",
+      "lastName": "Климко",
+      "email": "klimkov@nca.by"
+    },
+    {
+      "id": "35ae",
+      "firstName": "Lizaveta",
+      "lastName": "Klimkova",
+      "email": "lyzavirus@mail.ru"
+    },
+    {
+      "id": "36ad",
+      "firstName": "Андрей",
+      "lastName": "Климко",
+      "email": "klimkov@nca.by"
     }
   ]
 }
