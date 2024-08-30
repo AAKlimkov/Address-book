@@ -5,7 +5,7 @@ import { Contact } from '@/types';
 import ContactCard from '@/molecules/ContactCard/ContactCard';
 import { useContactsService } from '@/services/api';
 import Modal from '@/molecules/Modal/Modal';
-import ContactCardModal from '@/molecules/ConctactCardModal/ContactCardModal';
+import EditCardModal from '@/molecules/EditCardModal/EditCardModal';
 
 interface CardListProps {
   contacts: Contact[];
@@ -29,7 +29,7 @@ const ContactCardList: React.FC<CardListProps> = ({ contacts }) => {
   const handleDelete = async () => {
     if (selectedContact) {
       await deleteContact(selectedContact.id);
-      refetch(); // Refetch contacts after deleting
+      refetch();
       handleCloseModal();
     }
   };
@@ -50,7 +50,7 @@ const ContactCardList: React.FC<CardListProps> = ({ contacts }) => {
 
       {isModalOpen && (
         <Modal onClose={handleCloseModal}>
-          <ContactCardModal
+          <EditCardModal
             firstName={selectedContact?.firstName}
             lastName={selectedContact?.lastName}
             email={selectedContact?.email || ''}
@@ -59,7 +59,6 @@ const ContactCardList: React.FC<CardListProps> = ({ contacts }) => {
             }
             onDelete={handleDelete}
             onClose={handleCloseModal}
-            mode="edit"
           />
         </Modal>
       )}
