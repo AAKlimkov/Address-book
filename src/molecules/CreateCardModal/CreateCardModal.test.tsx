@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ContactCardModal from './ContactCardModal';
+import ContactCardModal from './CreateCardModal';
 
 const mockOnSave = jest.fn();
 const mockOnDelete = jest.fn();
@@ -12,17 +12,7 @@ describe('ContactCardModal', () => {
   });
 
   test('renders with initial values', () => {
-    render(
-      <ContactCardModal
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        onSave={mockOnSave}
-        onDelete={mockOnDelete}
-        onClose={mockOnClose}
-        mode="add"
-      />
-    );
+    render(<ContactCardModal onSave={mockOnSave} onClose={mockOnClose} />);
 
     expect(screen.getByPlaceholderText('First Name')).toHaveValue('John');
     expect(screen.getByPlaceholderText('Last Name')).toHaveValue('Doe');
@@ -32,17 +22,7 @@ describe('ContactCardModal', () => {
   });
 
   test('updates input fields correctly', () => {
-    render(
-      <ContactCardModal
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        onSave={mockOnSave}
-        onDelete={mockOnDelete}
-        onClose={mockOnClose}
-        mode="add"
-      />
-    );
+    render(<ContactCardModal onSave={mockOnSave} onClose={mockOnClose} />);
 
     expect(screen.getByLabelText('First Name')).toHaveValue('John');
     expect(screen.getByLabelText('Last Name')).toHaveValue('Doe');
@@ -66,17 +46,7 @@ describe('ContactCardModal', () => {
   });
 
   test('calls onSave with updated values', () => {
-    render(
-      <ContactCardModal
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        onSave={mockOnSave}
-        onDelete={mockOnDelete}
-        onClose={mockOnClose}
-        mode="add"
-      />
-    );
+    render(<ContactCardModal onSave={mockOnSave} onClose={mockOnClose} />);
 
     fireEvent.change(screen.getByPlaceholderText('First Name'), {
       target: { value: 'Jane' },
@@ -97,67 +67,27 @@ describe('ContactCardModal', () => {
   });
 
   test('calls onDelete when delete button is clicked', () => {
-    render(
-      <ContactCardModal
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        onSave={mockOnSave}
-        onDelete={mockOnDelete}
-        onClose={mockOnClose}
-        mode="edit"
-      />
-    );
+    render(<ContactCardModal onSave={mockOnSave} onClose={mockOnClose} />);
 
     fireEvent.click(screen.getByText('Delete'));
     expect(mockOnDelete).toHaveBeenCalled();
   });
 
   test('calls onClose when close button is clicked', () => {
-    render(
-      <ContactCardModal
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        onSave={mockOnSave}
-        onDelete={mockOnDelete}
-        onClose={mockOnClose}
-        mode="add"
-      />
-    );
+    render(<ContactCardModal onSave={mockOnSave} onClose={mockOnClose} />);
 
     fireEvent.click(screen.getByText('Cancel'));
     expect(mockOnClose).toHaveBeenCalled();
   });
 
   test('disables Save button when all fields are empty', () => {
-    render(
-      <ContactCardModal
-        firstName=""
-        lastName=""
-        email=""
-        onSave={mockOnSave}
-        onDelete={mockOnDelete}
-        onClose={mockOnClose}
-        mode="add"
-      />
-    );
+    render(<ContactCardModal onSave={mockOnSave} onClose={mockOnClose} />);
 
     expect(screen.getByText('Save')).toBeDisabled();
   });
 
   test('enables Save button when fields are not empty', () => {
-    render(
-      <ContactCardModal
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        onSave={mockOnSave}
-        onDelete={mockOnDelete}
-        onClose={mockOnClose}
-        mode="add"
-      />
-    );
+    render(<ContactCardModal onSave={mockOnSave} onClose={mockOnClose} />);
 
     expect(screen.getByText('Save')).toBeEnabled();
   });

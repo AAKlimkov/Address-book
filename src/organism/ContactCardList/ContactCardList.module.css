@@ -1,0 +1,28 @@
+.cardList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: relative;
+}
+
+.cardItem {
+  flex: 1;
+  min-width: 200px;
+  max-width: calc(33.33% - 16px);
+}
+
+@media (min-width: 768px) {
+  .cardItem {
+    max-width: calc(10% - 16px);
+  }
+}
+
+@media (max-width: 767px) {
+  .cardItem {
+    max-width: 100%;
+  }
+
+  .cardList {
+    gap: 0;
+  }
+}
